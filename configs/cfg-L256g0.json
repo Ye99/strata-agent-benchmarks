@@ -1,0 +1,43 @@
+{
+ "exe": "/home/ye/p/Strata/engine/strata",
+ "args": [
+  "--pack",
+  "/home/ye/p/Strata-data/packs/iq3_s",
+  "--native",
+  "/home/ye/p/Strata-data/models/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+  "--ple-gguf",
+  "/home/ye/p/Strata-data/models/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+  "--expert-profile",
+  "/home/ye/p/Strata/data/expert-profile.bin",
+  "--expert-cache",
+  "auto",
+  "--prefill",
+  "auto",
+  "--spec",
+  "4",
+  "--spec-min-p",
+  "0.5",
+  "--mtp",
+  "/home/ye/p/Strata-data/mtp/rt",
+  "--max-context",
+  "262144",
+  "--kv",
+  "int8",
+  "--kv-resident",
+  "32768"
+ ],
+ "cwd": "/home/ye/p/Strata",
+ "tokenizer": "/home/ye/p/Strata-data/packs/iq3_s/tokenizer",
+ "model_name": "qwen3.8-flash-next-iq3_s",
+ "log": "/tmp/strata-exp-L256g0.log",
+ "lib_dirs": [
+  "/usr/local/cuda-13.3/bin",
+  "/usr/local/cuda-13.3/lib64"
+ ],
+ "port": 8090,
+ "gpu": [
+  0
+ ],
+ "gpus_asked": false,
+ "host": "0.0.0.0"
+}
