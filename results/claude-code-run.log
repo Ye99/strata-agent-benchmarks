@@ -1,0 +1,12 @@
+L256 wall=157s files=__pycache__ fizzbuzz.py test_fizzbuzz.py 
+  req: prompt 43068 reused 0 read 43068 out 109 prompt_s 25.6 dec_tps 53.0
+  req: prompt 30834 reused 0 read 30834 out 8 prompt_s 19.4 dec_tps 40.0
+  req: prompt 42765 reused 0 read 42765 out 154 prompt_s 25.6 dec_tps 49.9
+  req: prompt 30813 reused 0 read 30813 out 8 prompt_s 21.2 dec_tps 36.9
+  req: prompt 42636 reused 0 read 42636 out 71 prompt_s 25.8 dec_tps 47.3
+  req: prompt 18691 reused 0 read 18691 out 519 prompt_s 17.1 dec_tps 44.5
+L256g0c wall=139s files=__pycache__ fizzbuzz.py test_fizzbuzz.py 
+  req: prompt 42809 reused 42663 read 146 out 93 prompt_s 3.6 dec_tps 30.8
+  req: prompt 30797 reused 0 read 30797 out 8 prompt_s 39.3 dec_tps 19.1
+  req: prompt 42608 reused 0 read 42608 out 56 prompt_s 48.1 dec_tps 31.0
+  req: prompt 18689 reused 0 read 18689 out 495 prompt_s 25.6 dec_tps 35.0
