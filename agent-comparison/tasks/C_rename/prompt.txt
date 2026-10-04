@@ -1,0 +1,1 @@
+Rename the function `calc` to `compute_total` everywhere: the code, the tests and the documentation. Do NOT rename `calc_tax`. The tests must still pass (`python3 -m unittest discover -s tests`) and `python3 main.py` must print the same output as before. Reply DONE with a one-line summary.
