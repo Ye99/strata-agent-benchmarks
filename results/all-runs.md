@@ -60,3 +60,9 @@
 | 1 GPU + cache, 384K context (yarn 1.5) | 43,422 | 874.7 | 36.1 | 0.9 | 43,605 | yes |
 | 1 GPU + cache, 384K context (yarn 1.5) | 82,739 | 899.3 | 31.0 | 3.5 | 82,732 | yes |
 | 1 GPU + cache, 384K context (yarn 1.5) | 184,482 | 895.6 | 28.6 | 1.4 | 184,660 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 5,326 | 915.2 | 36.2 | 0.7 | 5,469 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 5,704 | 972.8 | 37.3 | 0.8 | 5,846 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 34,979 | 1220.7 | 32.2 | 0.9 | 35,124 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 43,423 | 1279.0 | 35.6 | 0.9 | 43,589 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 82,739 | 1292.5 | 31.9 | 2.2 | 82,732 | yes |
+| 1 GPU on the x8 slot + cache 16 GiB, 16K KV in VRAM (deployed) | 184,481 | 1263.0 | 24.8 | 1.4 | 184,640 | yes |

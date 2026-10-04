@@ -1,0 +1,34 @@
+[
+ {
+  "depth": 120000,
+  "rep": 0,
+  "prompt_tokens": 82739,
+  "t1_ttft": 64.01243925700055,
+  "t1_prefill_tps": 1292.5456514446364,
+  "t1_decode_tps": 31.896136801522307,
+  "t1_ct": 155,
+  "needle_ok": true,
+  "t1_accept": 0.6842105263157895,
+  "t2_prompt_tokens": 82926,
+  "t2_ttft": 2.213564411000334,
+  "t2_cached": 82732,
+  "t2_decode_tps": 31.42239883779266,
+  "t2_accept": 0.625
+ },
+ {
+  "depth": 190000,
+  "rep": 0,
+  "prompt_tokens": 184481,
+  "t1_ttft": 146.07055759299965,
+  "t1_prefill_tps": 1262.958141872946,
+  "t1_decode_tps": 24.787464323018845,
+  "t1_ct": 158,
+  "needle_ok": true,
+  "t1_accept": 0.5972222222222222,
+  "t2_prompt_tokens": 184671,
+  "t2_ttft": 1.359774976999688,
+  "t2_cached": 184640,
+  "t2_decode_tps": 27.253543906120765,
+  "t2_accept": 0.6226415094339622
+ }
+]
