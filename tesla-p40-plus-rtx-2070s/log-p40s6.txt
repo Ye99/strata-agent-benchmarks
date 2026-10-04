@@ -1,0 +1,2 @@
+{"depth": 6000, "rep": 0, "prompt_tokens": 5326, "t1_ttft": 18.85, "t1_prefill_tps": 282.62, "t1_decode_tps": 24.52, "t1_ct": 8, "needle_ok": false, "t1_accept": 0.6, "t2_prompt_tokens": 5366, "t2_ttft": 0.96, "t2_cached": 5333, "t2_decode_tps": 26.66, "t2_accept": 0.67}
+{"depth": 43000, "rep": 0, "prompt_tokens": 30010, "t1_ttft": 84.86, "t1_prefill_tps": 353.62, "t1_decode_tps": 24.45, "t1_ct": 145, "needle_ok": true, "t1_accept": 0.56, "t2_prompt_tokens": 30187, "t2_ttft": 0.95, "t2_cached": 30156, "t2_decode_tps": 23.32, "t2_accept": 0.58}

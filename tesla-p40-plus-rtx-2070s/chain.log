@@ -1,0 +1,44 @@
+=== c256 02:56:25
+loaded
+ "expert_slots": 473  "expert_slots_primary": 473  "vram_free_mib": 296  "arena_mib": 47962 
+0, 113 MiB
+1, 5 MiB
+Mem:              91          28          63           0           1          63
+=== done 03:23:45
+=== p40r8 03:47:58
+loaded
+ "expert_slots": 8891  "expert_slots_primary": 8891  "vram_free_mib": 540  "arena_mib": 47962 
+0, 23989 MiB
+1, 5 MiB
+Mem:              91          82           8           3           4           9
+=== p40r32 03:51:44
+loaded
+ "expert_slots": 8813  "expert_slots_primary": 8813  "vram_free_mib": 540  "arena_mib": 47962 
+0, 23989 MiB
+1, 5 MiB
+Mem:              91          62          29           3           4          29
+=== p40conv16 03:56:25
+loaded
+ "expert_slots": 8891  "expert_slots_primary": 8891  "vram_free_mib": 540  "arena_mib": 47962 
+0, 23989 MiB
+1, 5 MiB
+Mem:              91          78          12           3           4          12
+=== done 04:00:10
+=== p40k8v4 04:03:57
+FAILED_TO_LOAD
+  File "~/p/Strata/serve/server.py", line 2925, in main
+    engine = StrataEngine(exe, engine_args(cfg), cwd=cfg.get("cwd"), log=cfg.get("log"), env=env, lazy=lazy)
+  File "~/p/Strata/serve/server.py", line 362, in __init__
+    raise RuntimeError("the engine exited before it was ready" + (f" (see {log})" if log else "") +
+                       start_failure_hint(log, log_start) + start_log_tail(log, log_start))
+RuntimeError: the engine exited before it was ready (see /tmp/strata-exp-p40k8v4.log)
+the engine log's last lines:
+  strata generate: --kv k8v4 does not support --kv-resident streaming (yet)
+FAILED p40k8v4
+=== p40s6 04:14:03
+loaded
+ "expert_slots": 8890  "expert_slots_primary": 8890  "vram_free_mib": 528  "arena_mib": 47962 
+0, 24043 MiB
+1, 5 MiB
+Mem:              91          82           9           3           4           9
+=== done 04:17:58

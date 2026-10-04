@@ -1,0 +1,7 @@
+{"depth": 6000, "rep": 0, "prompt_tokens": 5326, "t1_ttft": 187.03, "t1_prefill_tps": 28.48, "t1_decode_tps": 22.3, "t1_ct": 163, "needle_ok": false, "t1_accept": 0.64, "t2_prompt_tokens": 5521, "t2_ttft": 1.21, "t2_cached": 5488, "t2_decode_tps": 24.56, "t2_accept": 0.69}
+{"depth": 43000, "rep": 0, "prompt_tokens": 30008, "t1_ttft": 1095.03, "t1_prefill_tps": 27.4, "t1_decode_tps": 22.03, "t1_ct": 144, "needle_ok": true, "t1_accept": 0.7, "t2_prompt_tokens": 30184, "t2_ttft": 1.21, "t2_cached": 30153, "t2_decode_tps": 20.19, "t2_accept": 0.59}
+Traceback (most recent call last):
+  File "~/p/bench-p40/agent_bench.py", line 44, in <module>
+    pt=a['usage']['prompt_tokens']; ct=a['usage']['completion_tokens']
+       ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
