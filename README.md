@@ -51,6 +51,14 @@ A second instance on GPU 0 next to the first did not help two Claude Code sessio
 sharing one instance (decode is limited by the shared CPU and RAM bandwidth). Two instances need 128 GB of RAM. Details:
 [`two-instances/`](two-instances/README.md).
 
+## Different GPUs: a Tesla P40 24 GB and an RTX 2070 SUPER 8 GB
+
+Repeating the setup on older, weaker cards. The 8 GB card holds 473 experts and prefills at 27 t/s - 18 minutes for a
+30K-token prompt - while the P40 that `setup.sh --check` rejects (compute capability 6.1) runs 10-13x faster through
+the experimental sm_61 build: 8,891 experts, 279-353 t/s prefill. `--kv-resident`, the conversation-cache size and
+the PCIe-slot question all turned out not to matter there, and spec depth 4 is the optimum again. Details:
+[`tesla-p40-plus-rtx-2070s/`](tesla-p40-plus-rtx-2070s/README.md).
+
 ## Method
 
 - `scripts/agent_bench.py`: the context is real source code (the Strata repo), not random words, because code drafts
