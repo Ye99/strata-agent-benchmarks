@@ -26,7 +26,7 @@ Real Claude Code, a small pytest task, 4-6 requests: 157 s on 2 GPUs, 139 s on 1
 and mostly first-time reads, so the cache's benefit is understated; see `results/claude-code-run.log` for each request's
 reused tokens.
 
-**PCIe slot matters.** The two cards sit in different slots: GPU 0 at x4, GPU 1 at x8 (`nvidia-smi --query-gpu=pcie.link.width.max`). All single-GPU rows above except the "x8 slot" one ran on the x4 card. Moving to the x8 card (`configs/cfg-G16x8.json`) raised cold prefill about 40-45% (1,280 vs 880 t/s at 43K, 1,263 vs 900 at 184K) because experts stream over PCIe; decode and cached-turn times did not change measurably (the 184K decode, 25 vs 31 t/s, is one run each).
+**PCIe slot matters.** The two cards sit in different slots: GPU 0 at x4, GPU 1 at x8 (`nvidia-smi --query-gpu=index,pcie.link.width.current`: both cards report a max of x8, but GPU 0 negotiates x4 in this machine). All single-GPU rows above except the "x8 slot" one ran on the x4 card. Moving to the x8 card (`configs/cfg-G16x8.json`) raised cold prefill about 40-45% (1,280 vs 880 t/s at 43K, 1,263 vs 900 at 184K) because experts stream over PCIe; decode and cached-turn times did not change measurably (the 184K decode, 25 vs 31 t/s, is one run each).
 
 **Chosen engine arguments** (`configs/cfg-G16x8.json`): GPU 1 (the x8 slot) only, `--max-context 262144`, `--kv int8 --kv-resident 16384`,
 `--spec 4`, `--conversation-cache-mib 16384 --conversation-cache-slots 4`. GPU 0 stays free.
