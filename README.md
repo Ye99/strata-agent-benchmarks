@@ -19,14 +19,17 @@ it only works on a single GPU. One GPU decodes slower, but a cached turn starts 
 | --- | --- | --- | --- |
 | 2 GPUs, int8 KV | 50 -> 45 | 830 -> 2,000 | 7 s / 25 s / 92 s |
 | 1 GPU, no cache | 37 -> 28 | 600 -> 900 | 11 s / 52 s / 208 s |
-| **1 GPU + conversation cache** | 36 -> 29-31 | 600 -> 900 | **0.7-1 s / 1 s / 1.3 s** |
+| **1 GPU + conversation cache** (on the x4 slot) | 36 -> 29-31 | 600 -> 900 | **0.7-1 s / 1 s / 1.3 s** |
+| **same, on the x8 slot** | 36 -> 25-27 | 915 -> 1,260 | 0.7-0.8 s / 0.85 s / 1.4 s |
 
 Real Claude Code, a small pytest task, 4-6 requests: 157 s on 2 GPUs, 139 s on 1 GPU with the cache. The task is short
 and mostly first-time reads, so the cache's benefit is understated; see `results/claude-code-run.log` for each request's
 reused tokens.
 
-**Chosen engine arguments** (`configs/cfg-G16.json`): GPU 0 only, `--max-context 262144`, `--kv int8 --kv-resident 16384`,
-`--spec 4`, `--conversation-cache-mib 16384 --conversation-cache-slots 4`. GPU 1 stays free.
+**PCIe slot matters.** The two cards sit in different slots: GPU 0 at x4, GPU 1 at x8 (`nvidia-smi --query-gpu=pcie.link.width.max`). All single-GPU rows above except the "x8 slot" one ran on the x4 card. Moving to the x8 card (`configs/cfg-G16x8.json`) raised cold prefill about 40-45% (1,280 vs 880 t/s at 43K, 1,263 vs 900 at 184K) because experts stream over PCIe; decode and cached-turn times did not change measurably (the 184K decode, 25 vs 31 t/s, is one run each).
+
+**Chosen engine arguments** (`configs/cfg-G16x8.json`): GPU 1 (the x8 slot) only, `--max-context 262144`, `--kv int8 --kv-resident 16384`,
+`--spec 4`, `--conversation-cache-mib 16384 --conversation-cache-slots 4`. GPU 0 stays free.
 
 Things that made no measurable difference (within the run-to-run noise): q4_0 KV cache, 16K or 64K of KV kept in VRAM,
 speculative depth 6, and a 384K context (yarn rope scaling factor 1.5, experimental past the trained 262,144; it loaded
