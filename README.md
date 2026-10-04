@@ -45,6 +45,12 @@ A second experiment compares Strata (Qwen3.8-Flash-Next IQ3_S) with vLLM (Qwen3.
 about 2.6x faster per run (152 s vs 401 s). The tasks were too easy to separate the models. Tables, method and code:
 [`agent-comparison/`](agent-comparison/README.md).
 
+## Two instances, one per GPU
+
+A second instance on GPU 0 next to the first did not help two Claude Code sessions: total run time was the same as
+sharing one instance (decode is limited by the shared CPU and RAM bandwidth). Two instances need 128 GB of RAM. Details:
+[`two-instances/`](two-instances/README.md).
+
 ## Method
 
 - `scripts/agent_bench.py`: the context is real source code (the Strata repo), not random words, because code drafts
