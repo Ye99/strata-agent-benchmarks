@@ -38,6 +38,13 @@ of a 184K-token prompt.
 
 All individual runs: [`results/all-runs.md`](results/all-runs.md) (raw JSON in `results/`).
 
+## Agent success rate: Strata vs vLLM 27B
+
+A second experiment compares Strata (Qwen3.8-Flash-Next IQ3_S) with vLLM (Qwen3.8-27B INT4) as the backend of Claude Code on
+6 small coding tasks x 3 attempts: both passed 17 of 18 runs with about the same number of turns (14.2 vs 14.8), and Strata was
+about 2.6x faster per run (152 s vs 401 s). The tasks were too easy to separate the models. Tables, method and code:
+[`agent-comparison/`](agent-comparison/README.md).
+
 ## Method
 
 - `scripts/agent_bench.py`: the context is real source code (the Strata repo), not random words, because code drafts

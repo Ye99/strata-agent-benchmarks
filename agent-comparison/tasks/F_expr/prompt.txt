@@ -1,0 +1,1 @@
+Implement calc.py as described in README.md. Write your own tests in test_calc.py (include tricky cases) and run them with `python3 -m unittest -v`. When they pass, reply DONE with a one-line summary.

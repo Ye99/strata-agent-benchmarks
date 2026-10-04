@@ -1,0 +1,1 @@
+Implement what README.md describes (inventory.py and storage.py). Write your own tests in test_inventory.py and run them with `python3 -m unittest -v`. When everything passes, reply DONE with a one-line summary.

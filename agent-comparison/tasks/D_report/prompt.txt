@@ -1,0 +1,1 @@
+Read BUG.md and fix monthly_report.py. Do not change transactions.csv. Run the report to check your fix, then reply DONE with a one-line summary of what was wrong.

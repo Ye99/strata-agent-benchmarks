@@ -1,0 +1,1 @@
+Implement mini_wc.py as described in README.md. Test it yourself on a few files (create sample files and run the script), then reply DONE with a one-line summary.
