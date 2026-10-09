@@ -1,6 +1,6 @@
 # usage: mkcfg.py <variant>   writes cfg-<variant>.json (port 8090) from Strata's strata-iq3_s.json
-import json,sys,copy
-base=json.load(open('/home/ye/p/Strata/strata-iq3_s.json'))
+import json,sys,copy,os
+base=json.load(open(os.path.expanduser('~/p/Strata/strata-iq3_s.json')))
 def setarg(a,flag,val=None,drop=False):
     a=list(a)
     if flag in a:

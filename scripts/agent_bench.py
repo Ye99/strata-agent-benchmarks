@@ -10,7 +10,8 @@ Reports cold prefill tok/s, turn-2 TTFT, decode tok/s, and draft acceptance from
 import json,sys,time,random,string,glob,urllib.request,os
 host,depths,out=sys.argv[1],[int(x) for x in sys.argv[2].split(',')],sys.argv[3]
 reps=int(os.environ.get('REPS','2'))
-files=sorted(glob.glob('/home/ye/p/Strata/**/*.py',recursive=True)+glob.glob('/home/ye/p/Strata/src/**/*.cpp',recursive=True)+glob.glob('/home/ye/p/Strata/src/**/*.cu',recursive=True)+glob.glob('/home/ye/p/Strata/docs/*.md'))
+S=os.path.expanduser('~/p/Strata')
+files=sorted(glob.glob(S+'/**/*.py',recursive=True)+glob.glob(S+'/src/**/*.cpp',recursive=True)+glob.glob(S+'/src/**/*.cu',recursive=True)+glob.glob(S+'/docs/*.md'))
 corpus=''
 for f in files:
     try: corpus+=f'\n### FILE {f}\n'+open(f,errors='ignore').read()

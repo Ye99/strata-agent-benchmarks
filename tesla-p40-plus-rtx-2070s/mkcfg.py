@@ -1,6 +1,6 @@
 # usage: mkcfg.py <variant>   writes cfg-<variant>.json (port 8090) from Strata's strata-iq3_s.json
-import json,sys,copy
-base=json.load(open('/home/ye/p/Strata/strata-iq3_s.json'))
+import json,sys,copy,os
+base=json.load(open(os.path.expanduser('~/p/Strata/strata-iq3_s.json')))
 def setarg(a,flag,val):
     a=list(a)
     if flag in a:
@@ -39,7 +39,7 @@ V['c256s2']=mk(ctx=262144,res=16384,kv='int8',spec=2,conv=4096)
 V['c256s6']=mk(ctx=262144,res=16384,kv='int8',spec=6,conv=4096)
 V['c128']=mk(ctx=131072,res=16384,kv='int8',spec=4,conv=4096)
 # the P40 (24 GB, x16 slot), using the experimental sm_61 engine build
-SM61='/home/ye/p/Strata/engine/strata-sm61'
+SM61=os.path.expanduser('~/p/Strata/engine/strata-sm61')
 LIBS12=['/usr/local/cuda-12/targets/x86_64-linux/lib','/usr/lib/x86_64-linux-gnu']
 V['p40']=mk(ctx=262144,res=16384,kv='int8',spec=4,conv=4096,gpu=0,exe=SM61,libs=LIBS12)
 V['p40r32']=mk(ctx=262144,res=32768,kv='int8',spec=4,conv=4096,gpu=0,exe=SM61,libs=LIBS12)
@@ -51,4 +51,4 @@ V['p40s6']=mk(ctx=262144,res=16384,kv='int8',spec=6,conv=4096,gpu=0,exe=SM61,lib
 V['p40s2']=mk(ctx=262144,res=16384,kv='int8',spec=2,conv=4096,gpu=0,exe=SM61,libs=LIBS12)
 name=sys.argv[1]; c=copy.deepcopy(base); V[name](c)
 c['port']=8090; c['log']=f'/tmp/strata-exp-{name}.log'
-json.dump(c,open(f'/home/ye/p/bench-p40/cfg-{name}.json','w'),indent=1)
+json.dump(c,open(os.path.expanduser(f'~/p/bench-p40/cfg-{name}.json'),'w'),indent=1)

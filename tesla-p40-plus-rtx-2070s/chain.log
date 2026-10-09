@@ -26,9 +26,9 @@ Mem:              91          78          12           3           4          12
 === done 04:00:10
 === p40k8v4 04:03:57
 FAILED_TO_LOAD
-  File "/home/ye/p/Strata/serve/server.py", line 2925, in main
+  File "~/p/Strata/serve/server.py", line 2925, in main
     engine = StrataEngine(exe, engine_args(cfg), cwd=cfg.get("cwd"), log=cfg.get("log"), env=env, lazy=lazy)
-  File "/home/ye/p/Strata/serve/server.py", line 362, in __init__
+  File "~/p/Strata/serve/server.py", line 362, in __init__
     raise RuntimeError("the engine exited before it was ready" + (f" (see {log})" if log else "") +
                        start_failure_hint(log, log_start) + start_log_tail(log, log_start))
 RuntimeError: the engine exited before it was ready (see /tmp/strata-exp-p40k8v4.log)

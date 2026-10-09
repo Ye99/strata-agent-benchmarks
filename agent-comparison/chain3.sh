@@ -21,5 +21,5 @@ if [ -n "$P" ]; then
 fi
 sleep 10; nvidia-smi --query-gpu=index,memory.used --format=csv,noheader >> $LOG
 echo "=== restarting strata $(date +%T)" >> $LOG
-cd /home/ye/p/Strata && (setsid nohup ./run-iq3_s.sh > strata-server.out 2>&1 < /dev/null &)
+cd ~/p/Strata && (setsid nohup ./run-iq3_s.sh > strata-server.out 2>&1 < /dev/null &)
 echo "=== done $(date +%T)" >> $LOG

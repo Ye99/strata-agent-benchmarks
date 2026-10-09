@@ -59,7 +59,7 @@ All individual runs: [`results/all-runs.md`](results/all-runs.md) (raw JSON in `
   prompts come out shorter than the depth: about 5.3K and 5.7K, 35K and 43K, 83K, and 184K tokens.
 - `scripts/mkcfg.py` builds each variant's server config; `runvar.sh` starts it on port 8090 and waits until it has
   loaded; `chain2.sh` benchmarks a list of variants one after another; `cc_task.sh` runs the real Claude Code task.
-  The scripts contain this machine's paths (`/home/ye/p/Strata`).
+  The scripts expect Strata at `~/p/Strata`.
 - Only one server ran on the GPUs at a time.
 
 ## Caveats
