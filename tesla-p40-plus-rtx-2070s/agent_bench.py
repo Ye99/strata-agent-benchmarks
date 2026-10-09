@@ -39,7 +39,7 @@ res=[]
 for depth in depths:
     for rep in range(reps):
         nonce=''.join(random.choice(string.ascii_lowercase) for _ in range(12))
-        # ~3.2 chars/token for code
+        # depth*2.7 chars; at ~3 chars/token for this code, prompts come out shorter than depth (6K -> ~5.3-5.7K)
         rs=random.Random(depth*100+rep); L=int(depth*2.7); body=corpus[rs.randint(0,max(0,len(corpus)-L)):][:L]
         word=''.join(rs.choice(string.ascii_lowercase) for _ in range(6))+'-'+str(rs.randint(100,999)); k=int(len(body)*0.4); body=body[:k]+f'\n# NOTE: the deployment passphrase is {word}\n'+body[k:]
         sys_msg=f'Session {nonce}. You are a coding agent. Source context follows.\n{body}'
