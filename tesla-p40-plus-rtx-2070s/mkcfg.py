@@ -1,3 +1,4 @@
+# usage: mkcfg.py <variant>   writes cfg-<variant>.json (port 8090) from Strata's strata-iq3_s.json
 import json,sys,copy
 base=json.load(open('/home/ye/p/Strata/strata-iq3_s.json'))
 def setarg(a,flag,val):
@@ -27,7 +28,7 @@ def mk(ctx=None,res=None,kv=None,spec=None,conv=None,slots=4,gpu=1,extra=None,ex
 V={}
 # setup's own default for an 8 GB card
 V['base32']=mk()
-# the reference VM's chosen shape, ported to this card
+# the main README's chosen config, ported to this card
 V['c256']=mk(ctx=262144,res=16384,kv='int8',spec=4,conv=4096)
 V['c256r4']=mk(ctx=262144,res=4096,kv='int8',spec=4,conv=4096)
 V['c256r32']=mk(ctx=262144,res=32768,kv='int8',spec=4,conv=4096)
@@ -37,7 +38,7 @@ V['c256nocache']=mk(ctx=262144,res=16384,kv='int8',spec=4)
 V['c256s2']=mk(ctx=262144,res=16384,kv='int8',spec=2,conv=4096)
 V['c256s6']=mk(ctx=262144,res=16384,kv='int8',spec=6,conv=4096)
 V['c128']=mk(ctx=131072,res=16384,kv='int8',spec=4,conv=4096)
-# the P40 (24 GB, x16) via the experimental sm_61 engine build
+# the P40 (24 GB, x16 slot), using the experimental sm_61 engine build
 SM61='/home/ye/p/Strata/engine/strata-sm61'
 LIBS12=['/usr/local/cuda-12/targets/x86_64-linux/lib','/usr/lib/x86_64-linux-gnu']
 V['p40']=mk(ctx=262144,res=16384,kv='int8',spec=4,conv=4096,gpu=0,exe=SM61,libs=LIBS12)

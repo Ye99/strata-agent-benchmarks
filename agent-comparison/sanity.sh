@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# start state must fail; reference solution must pass
+# Every starting state must fail and every reference solution must pass.
 AB=$(cd "$(dirname "$0")" && pwd)
 run() { local t=$1; local d; d=$(mktemp -d); /bin/cp -rf $AB/tasks/$t/start/. $d; shift; for s in "$@"; do eval "$s"; done; (cd $d && timeout 60 python3 $AB/tasks/$t/verify.py 2>&1 | tail -1 | cut -c1-200); }
 echo "A start:"; run A_textstats

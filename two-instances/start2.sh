@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# usage: start2.sh <name> <gpu> <port> <pool>  (does NOT kill others)
+# usage: start2.sh <name> <gpu> <port> <pool>   (does NOT stop other instances)
 D=$(cd "$(dirname "$0")" && pwd); python3 $D/mk2.py $1 $2 $3 $4 || exit 1
 cd /home/ye/p/Strata
 setsid nohup .venv/bin/python serve/server.py --engine strata --config $D/cfg-$1.json --port $3 > $D/server-$1.out 2>&1 < /dev/null &
