@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Phase 1: every task on Strata; phase 2: every task on vLLM; then restart Strata.
 AB=$(cd "$(dirname "$0")" && pwd); LOG=$AB/chain3.log
 TASKS="A_textstats B_inventory C_rename D_report E_wc F_expr"
 suite() { for t in $TASKS; do for n in 1 2 3; do echo "$(date +%T) $2 $t $n" >> $LOG; $AB/run_one.sh $1 $2 $t $n >> $LOG 2>&1; done; done; }

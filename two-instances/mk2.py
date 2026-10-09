@@ -1,5 +1,5 @@
 import json,sys,os
-# usage: mk2.py <name> <gpu> <port> <pool_workers|0> ; env MMAP=1 for --mmap-experts, CMIB for conv cache MiB
+# usage: mk2.py <name> <gpu> <port> <pool_workers|0>   env: MMAP=1 adds --mmap-experts, CMIB sets the conversation-cache MiB
 name,gpu,port,pw=sys.argv[1],int(sys.argv[2]),int(sys.argv[3]),int(sys.argv[4])
 c=json.load(open('~/p/Strata/strata-iq3_s.json'))
 a=c['args']

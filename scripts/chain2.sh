@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# usage: chain2.sh <variant> [...]   start each variant, benchmark it, log memory
 D=$(cd "$(dirname "$0")" && pwd)
 for v in "$@"; do
   echo "=== $v $(date +%T)" >> $D/chain2.log

@@ -1,8 +1,12 @@
 """Agent-shaped benchmark for a Strata server (OpenAI /v1/chat/completions, streaming).
-Context = real source code (Strata repo) up to ~depth tokens (code drafts well, unlike random words).
-Per depth: turn 1 (cold) then turn 2 = same prefix + assistant reply + new question (the Claude Code pattern:
-the prefix is resent, so the server's prompt cache should make turn 2's first token fast).
-Reports prefill t/s (cold), turn-2 TTFT, decode t/s, and draft acceptance from /metrics totals."""
+
+Usage: agent_bench.py <host> <depth,depth,...> <out.json>   (env REPS: repetitions per depth, default 2)
+
+The context is real source code from the Strata repo, up to about `depth` tokens (code drafts well; random words
+do not). For each depth, turn 1 is cold. Turn 2 resends the same prefix plus the assistant's reply and a new
+question, after an unrelated short title request; this is the Claude Code pattern, so the server's prompt cache
+should make turn 2's first token fast.
+Reports cold prefill tok/s, turn-2 TTFT, decode tok/s, and draft acceptance from the /metrics totals."""
 import json,sys,time,random,string,glob,urllib.request,os
 host,depths,out=sys.argv[1],[int(x) for x in sys.argv[2].split(',')],sys.argv[3]
 reps=int(os.environ.get('REPS','2'))
@@ -35,7 +39,7 @@ res=[]
 for depth in depths:
     for rep in range(reps):
         nonce=''.join(random.choice(string.ascii_lowercase) for _ in range(12))
-        # ~3.2 chars/token for code
+        # depth*2.7 chars; at ~3 chars/token for this code, prompts come out shorter than depth (6K -> ~5.3-5.7K)
         rs=random.Random(depth*100+rep); L=int(depth*2.7); body=corpus[rs.randint(0,max(0,len(corpus)-L)):][:L]
         word=''.join(rs.choice(string.ascii_lowercase) for _ in range(6))+'-'+str(rs.randint(100,999)); k=int(len(body)*0.4); body=body[:k]+f'\n# NOTE: the deployment passphrase is {word}\n'+body[k:]
         sys_msg=f'Session {nonce}. You are a coding agent. Source context follows.\n{body}'
