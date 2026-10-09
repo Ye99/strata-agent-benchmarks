@@ -1,13 +1,17 @@
 # Agent success rate: Strata (Qwen3.8-Flash-Next IQ3_S) vs vLLM (Qwen3.8-27B INT4)
 
-Both were driven by Claude Code through their own launchers (`claude-qwen-strata-iq3_s` and `claude-qwen-vllm`).
-Question: which one is the better coding agent? Priority 1: success rate and trajectory length (turns); priority 2: speed.
-Date: 2026-10-03. Machine: 2x RTX 4060 Ti 16 GB, 94 GB RAM.
+Both backends were driven by Claude Code through their own launchers (`claude-qwen-strata-iq3_s` and
+`claude-qwen-vllm`). Question: which one makes the better coding agent? Priority 1 is success rate and trajectory
+length (turns); priority 2 is speed. Part of [strata-agent-benchmarks](../README.md).
+
+**Machine:** 2x RTX 4060 Ti 16 GB, 94 GB RAM.
+
+**Date:** 2026-10-03.
 
 ## Result
 
-6 small Python tasks x 3 attempts = 18 runs per backend. Each run starts from a fresh directory; success is decided by hidden checks
-that the agent never sees (`tasks/*/verify.py`). "Turns" is Claude Code's `num_turns` for the run.
+6 small Python tasks x 3 attempts = 18 runs per backend. Each run starts from a fresh directory, and success is decided
+by hidden checks that the agent never sees (`tasks/*/verify.py`). "Turns" is Claude Code's `num_turns` for the run.
 
 | Task | Strata: full passes / avg turns / avg time | vLLM: full passes / avg turns / avg time |
 | --- | --- | --- |
@@ -19,28 +23,37 @@ that the agent never sees (`tasks/*/verify.py`). "Turns" is Claude Code's `num_t
 | F: write an expression parser without `eval` (57 checks) | 3/3, 12.3, 231 s | 3/3, 9.0, 616 s |
 | **All** | **17/18**, 14.2 turns (median 10), 152 s, ~4,200 output tokens | **17/18**, 14.8 turns (median 9.5), 401 s, ~12,500 output tokens |
 
-- Success rate and turns are the same within noise (one miss each). Strata's miss (D, attempt 3) ended after 1 turn with
-  "I'm ready - what would you like me to work on?" and never touched the task; vLLM's miss (E, attempt 2) passed 13 of 14
-  checks and failed reading from stdin after 31 turns.
-- Strata was about 2.6x faster per run; vLLM wrote about 3x as many output tokens per run (longer reasoning), so most of
-  the gap is tokens, not decode speed.
+- Success rate and turns are equal within noise (one miss each). Strata's miss (D, attempt 3) ended after 1 turn with
+  "I'm ready - what would you like me to work on?" and never touched the task. vLLM's miss (E, attempt 2) ran 31 turns
+  and passed 13 of 14 checks, failing only the one that reads from stdin.
+- Strata was about 2.6x faster per run. vLLM wrote about 3x as many output tokens per run (longer reasoning), so most
+  of the gap comes from token count, not decode speed.
 - **Too easy to separate the models:** both are near the ceiling. A harder second round (larger refactors, longer
-  trajectories) is needed to say which is the better agent.
+  trajectories) is needed to tell which is the better agent.
 
-## Setup and differences between the two sides
+## Method
 
-- Same prompts, same `CLAUDE_CODE_EFFORT_LEVEL=medium`, `--max-turns 40`, `--permission-mode default`, and the same tool
-  allow-list: Read, Write, Edit, Glob, Grep, `python3 -m unittest`, `python3 *.py`, and read-only `ls cat grep head tail wc diff`.
-  (Claude Code's own sandbox cannot start inside this VM, so scoped permissions were used instead of the sandbox.)
-- The servers cannot share the GPUs: the Strata phase ran first, then Strata was stopped, vLLM ran, and Strata was restarted.
-- Not identical: Strata used one GPU (the x8 slot) with a 262K context and a conversation cache; vLLM used both GPUs
-  (tensor parallel 2, MTP-2, 163K context). Sampling and reasoning defaults come from each server and were left alone.
-- 3 attempts per task is small; one run is 5.5 percentage points.
+- Same prompts, same `CLAUDE_CODE_EFFORT_LEVEL=medium`, `--max-turns 40`, `--permission-mode default`, and the same
+  tool allow-list: Read, Write, Edit, Glob, Grep, `python3 -m unittest`, `python3 *.py`, and read-only
+  `ls cat grep head tail wc diff`. Claude Code's own sandbox cannot start inside this VM, so scoped permissions were
+  used instead.
+- The two servers cannot share the GPUs: the Strata phase ran first, then Strata was stopped, vLLM ran, and Strata was
+  restarted.
+- The two sides are not configured identically: Strata used one GPU (the x8 slot) with a 262,144-token context and a
+  conversation cache; vLLM used both GPUs (tensor parallel 2, MTP-2, 163K context). Sampling and reasoning defaults
+  come from each server and were left unchanged.
+
+## Caveats
+
+- 3 attempts per task is a small sample: one run is 5.5 percentage points.
 
 ## Files
 
-- `tasks/<task>/{start/,prompt.txt,verify.py}`: the starting project, the prompt and the hidden checks. `ref/` holds a
-  reference solution per task; `sanity.sh` confirms that every starting state fails and every reference passes.
+- `tasks/<task>/{start/,prompt.txt,verify.py}`: the starting project, the prompt and the hidden checks. `ref/` holds
+  one reference solution per task; `sanity.sh` confirms that every starting state fails and every reference solution
+  passes. `harness.py` is the check helper that every `verify.py` uses.
 - `run_one.sh`: one run (launcher, task, attempt) -> one line in `results-<label>.jsonl`. `chain3.sh`: the two-phase
-  sequence used here (it has this machine's launcher and vLLM paths). `summarize.py`: the table above from the JSONL files.
-- `results-strata.jsonl`, `results-vllm.jsonl`: every run (turns, wall time, API time, tokens, checks passed, failed checks).
+  sequence used here (it contains this machine's launcher and vLLM paths). `summarize.py`: summarizes the JSONL files
+  into the per-task numbers above.
+- `results-strata.jsonl`, `results-vllm.jsonl`: every run (turns, wall time, API time, tokens, checks passed, failed
+  checks).
