@@ -102,5 +102,3 @@ RTX 4060 Ti result. The settings that mattered on the RTX 4060 Ti (single GPU vs
 - `cfg-<variant>.json`: the configs actually run. `res-<variant>.json` and `log-<variant>.txt`: the raw runs
   (`chain.log` has the expert-slot and memory lines for each variant). `server-<variant>.out`: engine start-up logs,
   including the expert-cache size each variant negotiated and the `k8v4` refusal.
-- Paths in the committed copies point to `~/p/bench-p40` (the working directory, renamed for publication) and
-  `~/p/Strata`.
