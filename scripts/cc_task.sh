@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# usage: cc_task.sh <variant> ; real Claude Code multi-turn task against the :8090 server for that variant.
-# Tools are limited to writing files in a throwaway dir and running pytest.
+# usage: cc_task.sh <variant>   runs a real multi-turn Claude Code task against that variant's server on :8090.
+# Tools are limited to writing files in a throwaway directory and running pytest.
 D=$(cd "$(dirname "$0")" && pwd); V=$1
 $D/runvar.sh $V || exit 1
 W=$(mktemp -d); cd $W && git init -q

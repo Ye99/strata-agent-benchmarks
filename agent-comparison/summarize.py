@@ -1,3 +1,4 @@
+# Prints per-task and per-backend summaries of results-strata.jsonl and results-vllm.jsonl.
 import json,glob,statistics as st,collections
 R={}
 for lab in ['strata','vllm']:
