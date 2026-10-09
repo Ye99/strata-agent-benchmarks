@@ -1,8 +1,12 @@
 """Agent-shaped benchmark for a Strata server (OpenAI /v1/chat/completions, streaming).
-Context = real source code (Strata repo) up to ~depth tokens (code drafts well, unlike random words).
-Per depth: turn 1 (cold) then turn 2 = same prefix + assistant reply + new question (the Claude Code pattern:
-the prefix is resent, so the server's prompt cache should make turn 2's first token fast).
-Reports prefill t/s (cold), turn-2 TTFT, decode t/s, and draft acceptance from /metrics totals."""
+
+Usage: agent_bench.py <host> <depth,depth,...> <out.json>   (env REPS: repetitions per depth, default 2)
+
+The context is real source code from the Strata repo, up to about `depth` tokens (code drafts well; random words
+do not). For each depth, turn 1 is cold. Turn 2 resends the same prefix plus the assistant's reply and a new
+question, after an unrelated short title request; this is the Claude Code pattern, so the server's prompt cache
+should make turn 2's first token fast.
+Reports cold prefill tok/s, turn-2 TTFT, decode tok/s, and draft acceptance from the /metrics totals."""
 import json,sys,time,random,string,glob,urllib.request,os
 host,depths,out=sys.argv[1],[int(x) for x in sys.argv[2].split(',')],sys.argv[3]
 reps=int(os.environ.get('REPS','2'))

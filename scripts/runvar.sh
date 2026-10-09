@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# usage: runvar.sh <variant>   starts the server for that variant on :8090 and waits until loaded
+# usage: runvar.sh <variant>   starts that variant's server on :8090 and waits until it has loaded
 D=$(cd "$(dirname "$0")" && pwd); N=$1
 pkill -f "[s]erve/server.py.*--port 8090" ; pkill -f "[s]erve/server.py.*--port 8080"; sleep 5
 python3 $D/mkcfg.py $N || exit 1
