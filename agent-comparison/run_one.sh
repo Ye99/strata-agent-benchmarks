@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # usage: run_one.sh <launcher> <label> <task> <attempt>   appends one JSON line to results-<label>.jsonl
 AB=$(cd "$(dirname "$0")" && pwd); L=$1; LABEL=$2; T=$3; N=$4
+mkdir -p "$AB/out"
 W=$(mktemp -d); /bin/cp -rf $AB/tasks/$T/start/. $W; cd $W && git init -q
 export CLAUDE_CODE_EFFORT_LEVEL=medium VLLM_KEEP_SERVER=1
 T0=$(date +%s.%N)

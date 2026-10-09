@@ -63,9 +63,9 @@ this test). So two sessions at once were no faster in total than running them on
 
 ## Files
 
-- `run2.sh`: the two-worker driver. It calls `ab/run_one.sh`, which reads `ab/tasks/`, so it expects a link or copy of
-  `agent-comparison/` at `two-instances/ab`. That directory existed on the test VM but is not committed; to rerun, create
-  it, for example with `ln -s ../agent-comparison two-instances/ab`.
+- `run2.sh`: the two-worker driver. It calls `ab/run_one.sh`; `ab` is a symlink to `../agent-comparison`, so the
+  tasks are shared and each worker appends to `agent-comparison/results-<label>-w1.jsonl` or `-w2.jsonl`.
 - `cc-url.sh`: Claude Code against `$CC_URL`, with the same environment as the launcher.
 - `mk2.py` and `start2.sh`: start an instance on a given GPU and port.
-- `results-shared.jsonl`, `results-dual.jsonl`: every run.
+- `results-shared.jsonl`, `results-dual.jsonl`: every run, with both workers' files combined (labels `<label>-w1`
+  and `<label>-w2`).
