@@ -2,8 +2,8 @@
 
 Every benchmark run on 2x RTX 4060 Ti, one row per run of [`scripts/agent_bench.py`](../scripts/agent_bench.py).
 The Config column names the server config in [`configs/`](../configs/) (`cfg-<config>.json`); the raw results are in
-`res-<config>-a.json` and `res-<config>-b.json` in this directory. TTFT is the time to first token. Summary:
-[main README](../README.md).
+`res-<config>-a.json` and `res-<config>-b.json` in this directory. TTFT is the time to first token. G16 and
+G16x8 use the same settings on the x4 and x8 slot; G16x8 is the deployed config. Summary: [main README](../README.md).
 
 | Variant | Config | Prompt tokens | Cold prefill tok/s | Decode tok/s | Turn-2 TTFT (s) | Cached tokens | Needle |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | :---: |
@@ -43,12 +43,12 @@ The Config column names the server config in [`configs/`](../configs/) (`cfg-<co
 | 1 GPU + cache 8 GiB | L256g0c | 43,423 | 876.3 | 34.7 | 1.0 | 43,634 | yes |
 | 1 GPU + cache 8 GiB | L256g0c | 82,738 | 902.7 | 29.2 | 1.1 | 82,901 | yes |
 | 1 GPU + cache 8 GiB | L256g0c | 184,482 | 896.5 | 28.6 | 1.4 | 184,643 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 5,326 | 594.6 | 35.5 | 0.9 | 5,483 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 5,704 | 640.6 | 32.8 | 0.7 | 5,930 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 34,978 | 840.3 | 34.2 | 0.8 | 35,114 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 43,423 | 879.4 | 36.8 | 0.9 | 43,592 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 82,738 | 908.0 | 32.7 | 1.2 | 82,901 | yes |
-| 1 GPU + cache 16 GiB, 16K KV in VRAM (chosen) | G16 | 184,482 | 902.1 | 30.9 | 1.3 | 184,653 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 5,326 | 594.6 | 35.5 | 0.9 | 5,483 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 5,704 | 640.6 | 32.8 | 0.7 | 5,930 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 34,978 | 840.3 | 34.2 | 0.8 | 35,114 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 43,423 | 879.4 | 36.8 | 0.9 | 43,592 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 82,738 | 908.0 | 32.7 | 1.2 | 82,901 | yes |
+| 1 GPU (x4 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings) | G16 | 184,482 | 902.1 | 30.9 | 1.3 | 184,653 | yes |
 | 1 GPU + cache, q4_0 KV | Gq4 | 5,327 | 604.3 | 36.9 | 0.7 | 5,466 | yes |
 | 1 GPU + cache, q4_0 KV | Gq4 | 5,702 | 648.8 | 35.2 | 0.7 | 5,861 | no |
 | 1 GPU + cache, q4_0 KV | Gq4 | 34,978 | 823.5 | 32.6 | 0.8 | 35,134 | yes |
@@ -67,9 +67,9 @@ The Config column names the server config in [`configs/`](../configs/) (`cfg-<co
 | 1 GPU + cache, 384K context (YaRN 1.5) | G384 | 43,422 | 874.7 | 36.1 | 0.9 | 43,605 | yes |
 | 1 GPU + cache, 384K context (YaRN 1.5) | G384 | 82,739 | 899.3 | 31.0 | 3.5 | 82,732 | yes |
 | 1 GPU + cache, 384K context (YaRN 1.5) | G384 | 184,482 | 895.6 | 28.6 | 1.4 | 184,660 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 5,326 | 915.2 | 36.2 | 0.7 | 5,469 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 5,704 | 972.8 | 37.3 | 0.8 | 5,846 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 34,979 | 1220.7 | 32.2 | 0.9 | 35,124 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 43,423 | 1279.0 | 35.6 | 0.9 | 43,589 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 82,739 | 1292.5 | 31.9 | 2.2 | 82,732 | yes |
-| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (deployed) | G16x8 | 184,481 | 1263.0 | 24.8 | 1.4 | 184,640 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 5,326 | 915.2 | 36.2 | 0.7 | 5,469 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 5,704 | 972.8 | 37.3 | 0.8 | 5,846 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 34,979 | 1220.7 | 32.2 | 0.9 | 35,124 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 43,423 | 1279.0 | 35.6 | 0.9 | 43,589 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 82,739 | 1292.5 | 31.9 | 2.2 | 82,732 | yes |
+| 1 GPU (x8 slot) + cache 16 GiB, 16K KV in VRAM (chosen settings, deployed) | G16x8 | 184,481 | 1263.0 | 24.8 | 1.4 | 184,640 | yes |

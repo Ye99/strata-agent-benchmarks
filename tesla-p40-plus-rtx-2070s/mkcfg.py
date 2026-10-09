@@ -28,7 +28,7 @@ def mk(ctx=None,res=None,kv=None,spec=None,conv=None,slots=4,gpu=1,extra=None,ex
 V={}
 # setup's own default for an 8 GB card
 V['base32']=mk()
-# the main README's chosen config, ported to this card
+# the main README's chosen config with a 4 GiB conversation cache, ported to this card
 V['c256']=mk(ctx=262144,res=16384,kv='int8',spec=4,conv=4096)
 V['c256r4']=mk(ctx=262144,res=4096,kv='int8',spec=4,conv=4096)
 V['c256r32']=mk(ctx=262144,res=32768,kv='int8',spec=4,conv=4096)

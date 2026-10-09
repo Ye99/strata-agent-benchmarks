@@ -16,7 +16,7 @@ split, each side request evicts the live conversation, so **every main turn re-r
 but it works only on a single GPU. One GPU decodes more slowly, but a cached turn starts in about 1 s, so for agent use
 it wins.
 
-| 262,144-token context | Decode tok/s (6K -> 184K prompt) | Cold prefill tok/s | TTFT of the next turn after a side request (5K / 43K / 184K prompt) |
+| 262,144-token context | Decode tok/s (5K -> 184K prompt) | Cold prefill tok/s | TTFT of the next turn after a side request (5K / 43K / 184K prompt) |
 | --- | --- | --- | --- |
 | 2 GPUs, int8 KV | 50 -> 45 | 830 -> 2,000 | 7 s / 25 s / 92 s |
 | 1 GPU, no cache | 37 -> 28 | 600 -> 900 | 11 s / 52 s / 208 s |
@@ -54,8 +54,9 @@ All individual runs: [`results/all-runs.md`](results/all-runs.md) (raw JSON in `
   context and asked for in turn 1 (the needle check). Turn 2 sends the same prefix, the assistant's answer and a new
   question, preceded by an unrelated short "title" request, as Claude Code does. Greedy decoding, reasoning off,
   300 max tokens.
-- Depths 6K and 50K (2 repetitions each), 120K and 190K (1 repetition each), with the same text slices for every
-  variant.
+- Depths (the script's `depth` argument) 6K and 50K with 2 repetitions each, and 120K and 190K with 1 repetition
+  each, using the same text slices for every variant. The script takes `depth` x 2.7 characters of source, so the
+  prompts come out shorter than the depth: about 5.3K and 5.7K, 35K and 43K, 83K, and 184K tokens.
 - `scripts/mkcfg.py` builds each variant's server config; `runvar.sh` starts it on port 8090 and waits until it has
   loaded; `chain2.sh` benchmarks a list of variants one after another; `cc_task.sh` runs the real Claude Code task.
   The scripts contain this machine's paths (`~/p/Strata`).
@@ -65,7 +66,8 @@ All individual runs: [`results/all-runs.md`](results/all-runs.md) (raw JSON in `
 
 - One run per cell: differences under about 10% are noise (decode tok/s varies with how many draft tokens are
   accepted, which depends on the text).
-- The needle check passed in most runs; the few misses at 5K happened with reasoning off and are not tied to a setting.
+- The needle check passed in 55 of 66 runs. Ten of the 11 misses were at the ~5K prompt and one was at 43K
+  (2 GPUs, q4_0 KV); all runs had reasoning off, and the misses are not tied to a setting.
 - Only one model and one quantization (IQ3_S) were tested. IQ2_XS, Q2_0 and the Swift fine-tune need separate
   downloads and were not tried.
 - The Claude Code task ran with tools limited to writing files in a scratch directory and running pytest.

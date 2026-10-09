@@ -28,7 +28,8 @@ changes everything: **8,891 expert slots** and 10-13x faster prefill.
 | **Tesla P40, same config** (experimental sm_61 engine) | **8,891** | **279 / 350 / 353** | 28.6 / 27.3 / 25.1 | 0.96-1.24 s | ok at 6K, 43K, 100K |
 | Same, setup's own defaults (32K context) | 508 | not run at depth | - | - | - |
 
-"conv 4096" is the conversation-cache size in MiB (`--conversation-cache-mib`).
+"conv 4096" is the conversation-cache size in MiB (`--conversation-cache-mib`). 6K / 43K / 100K are the benchmark
+depths; the prompts are about 5.3K, 30K and 88.6K tokens.
 
 Compared with the main README's RTX 4060 Ti (900-1,280 tok/s prefill, 25-37 tok/s decode), the P40 is still 2.6-3.6x
 slower at prefill: Pascal has no tensor cores, and the engine's pre-sm_80 prompt-attention path uses fp32 FMAs. But it
@@ -47,14 +48,14 @@ consistent with the docs' "every extra GB holds ~700 more experts".
 | `--kv k8v4` | - | did not start: `--kv k8v4 does not support --kv-resident streaming (yet)` | | |
 
 Only speculative depth moved anything. `--kv-resident` 8K/16K/32K is a wash because the expert arena absorbs the
-difference (8,891 vs 8,813 slots), and a 16 GiB conversation cache buys nothing over 4 GiB while pushing RAM use from
-~60 to 78 GiB of 91. Speculative depth 6 loses ~4 tok/s of decode (draft acceptance 0.56-0.60 vs 0.67-0.78), so
-**4 is the optimum here too**, matching the RTX 4060 Ti result. The settings that mattered on the RTX 4060 Ti (single
-GPU vs layer split, PCIe slot) do not apply: only one card is usable, and the conversation cache works on a single GPU.
+difference (8,891 vs 8,813 slots), and a 16 GiB conversation cache buys nothing over 4 GiB. Speculative depth 6 loses
+~4 tok/s of decode (draft acceptance 0.56-0.60 vs 0.67-0.78), so **4 is the optimum here too**, matching the
+RTX 4060 Ti result. The settings that mattered on the RTX 4060 Ti (single GPU vs layer split, PCIe slot) do not apply: only one card is usable, and the conversation cache works on a single GPU.
 
 **Chosen:** P40, `--max-context 262144 --kv int8 --kv-resident 16384 --spec 4 --spec-min-p 0.5
---conversation-cache-mib 4096 --conversation-cache-slots 4`, i.e. the main README's config unchanged; only the card
-and the engine build differ. The config is `cfg-p40.json`.
+--conversation-cache-mib 4096 --conversation-cache-slots 4`. The engine arguments match the main README's config
+([`configs/cfg-G16x8.json`](../configs/cfg-G16x8.json)) except for the conversation cache, 4 GiB here instead of
+16 GiB, since 16 GiB bought nothing; the card and the engine build also differ. The config is `cfg-p40.json`.
 
 ## Toolchain: what a different GPU costs
 
@@ -75,7 +76,8 @@ and the engine build differ. The config is `cfg-p40.json`.
 ## Caveats
 
 - **One run per cell:** differences under ~10% are noise.
-- **The 6K needle is not a usable check on this machine.** It failed in 5 of 7 runs at 6K and in 0 of 7 at 43K/100K,
+- **The 6K needle is not a usable check on this machine.** It failed in 4 of the 6 recorded runs at 6K and in 0 of 7
+  at 43K/100K (`log-*.txt`),
   and the failures have two different causes. Two runs emitted only 8 tokens: a spurious refusal, reproduced directly
   (the same 6K prompt was answered with `I can't help with that.` in 1 of 3 trials), because a hidden "deployment
   passphrase" inside a wall of source code sometimes looks to the model like a secret-exfiltration attempt. The rest
@@ -84,8 +86,9 @@ and the engine build differ. The config is `cfg-p40.json`.
   this depth pass/fail depends on the run, not on the setting under test.
 - The sm_61 build is upstream's community-tested path, not part of the ready-made engine; it is also the only
   supported way to use a Pascal card, and it needs a CUDA 12.x toolkit.
-- RAM is the binding constraint for anything bigger: one instance uses 54-60 GiB of 91 GiB, and the 16 GiB
-  conversation-cache variant reached 78 GiB used / 13 GiB free. A second quant or a second instance does not fit.
+- RAM is the binding constraint for anything bigger: the experts alone take 46.84 GiB of RAM (`server-*.out`), and
+  `free -g` after each sweep variant showed 62-82 GiB used of 91 (`chain.log`; 78 GiB for the 16 GiB
+  conversation-cache variant, 82 GiB for two of the 4 GiB variants). A second quant or a second instance does not fit.
 - The RTX 2070 SUPER row is one run at each depth (the 100K run was stopped once the 27 tok/s prefill made it
   pointless).
 - No real Claude Code task was run on this machine (Claude Code was not installed there); all the numbers above come
@@ -99,5 +102,5 @@ and the engine build differ. The config is `cfg-p40.json`.
 - `cfg-<variant>.json`: the configs actually run. `res-<variant>.json` and `log-<variant>.txt`: the raw runs
   (`chain.log` has the expert-slot and memory lines for each variant). `server-<variant>.out`: engine start-up logs,
   including the expert-cache size each variant negotiated and the `k8v4` refusal.
-- Paths in the committed copies read `~/p/bench-p40`; the working directory was renamed for publication so that no host
-  identifiers remain.
+- Paths in the committed copies point to `~/p/bench-p40` (the working directory, renamed for publication) and
+  `~/p/Strata`.

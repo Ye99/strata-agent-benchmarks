@@ -21,7 +21,8 @@ instance, and each run was about 1.6-2.5x slower than a run alone.
 
 ## Benchmark: `scripts/agent_bench.py`
 
-6K / 43K / 100K-token prompts, one run each; raw results in `bench-A.json` and `bench-B.json`.
+Depths 6K / 43K / 100K (prompts of about 5.3K, 30K and 88.6K tokens), one run each; raw results in `bench-A.json`
+and `bench-B.json`.
 
 | | GPU 1 alone | Both instances busy at once (GPU 1) | GPU 0 alone | Both busy (GPU 0) |
 | --- | --- | --- | --- | --- |
@@ -62,7 +63,9 @@ this test). So two sessions at once were no faster in total than running them on
 
 ## Files
 
-- `run2.sh`: the two-worker driver (uses `agent-comparison/run_one.sh` and `tasks/`).
+- `run2.sh`: the two-worker driver. It calls `ab/run_one.sh`, which reads `ab/tasks/`, so it expects a link or copy of
+  `agent-comparison/` at `two-instances/ab`. That directory existed on the test VM but is not committed; to rerun, create
+  it, for example with `ln -s ../agent-comparison two-instances/ab`.
 - `cc-url.sh`: Claude Code against `$CC_URL`, with the same environment as the launcher.
 - `mk2.py` and `start2.sh`: start an instance on a given GPU and port.
 - `results-shared.jsonl`, `results-dual.jsonl`: every run.

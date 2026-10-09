@@ -45,15 +45,16 @@ by hidden checks that the agent never sees (`tasks/*/verify.py`). "Turns" is Cla
 
 ## Caveats
 
-- 3 attempts per task is a small sample: one run is 5.5 percentage points.
+- 3 attempts per task is a small sample: one run is 5.6 percentage points.
 
 ## Files
 
 - `tasks/<task>/{start/,prompt.txt,verify.py}`: the starting project, the prompt and the hidden checks. `ref/` holds
   one reference solution per task; `sanity.sh` confirms that every starting state fails and every reference solution
   passes. `harness.py` is the check helper that every `verify.py` uses.
-- `run_one.sh`: one run (launcher, task, attempt) -> one line in `results-<label>.jsonl`. `chain3.sh`: the two-phase
-  sequence used here (it contains this machine's launcher and vLLM paths). `summarize.py`: summarizes the JSONL files
-  into the per-task numbers above.
+- `run_one.sh`: one run (launcher, task, attempt) -> one line in `results-<label>.jsonl`. It saves Claude Code's raw
+  output to `out/<label>-<task>-<attempt>.json` and `.err`, so create `out/` first (it is not committed).
+- `chain3.sh`: the two-phase sequence used here (it contains this machine's launcher and vLLM paths).
+  `summarize.py`: summarizes the JSONL files into the per-task numbers above.
 - `results-strata.jsonl`, `results-vllm.jsonl`: every run (turns, wall time, API time, tokens, checks passed, failed
   checks).
